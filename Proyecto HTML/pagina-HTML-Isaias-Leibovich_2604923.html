@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fan del Momo</title>
+
+  <!-- tipografias -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --marron: #5a3517;
+      --marron-claro: #8a5a2b;
+      --crema: #fdf6ec;
+      --amarillo: #ffcf4d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      font-family: "Nunito", sans-serif;
+      color: var(--marron);
+      /* fondo con textura de puntitos */
+      background-color: #ffe680;
+      background-image:
+        radial-gradient(var(--marron-claro) 1.5px, transparent 1.5px),
+        radial-gradient(var(--marron-claro) 1.5px, #ffe680 1.5px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      background-blend-mode: soft-light;
+    }
+
+    .caja {
+      background: var(--crema);
+      width: 100%;
+      max-width: 400px;
+      border: 5px solid var(--marron);
+      border-radius: 22px;
+      padding: 26px;
+      text-align: center;
+      box-shadow: 10px 10px 0 var(--marron);
+    }
+
+    .chapa {
+      display: inline-block;
+      background: var(--marron);
+      color: var(--crema);
+      font-weight: 800;
+      font-size: .8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 30px;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-family: "Luckiest Guy", "Comic Sans MS", cursive;
+      font-weight: normal;
+      font-size: 1.9rem;
+      line-height: 1.05;
+      margin: 6px 0 18px;
+      color: var(--marron);
+      letter-spacing: 1px;
+    }
+
+    .sub { margin: 0 0 18px; color: var(--marron-claro); font-weight: 700; }
+
+    /* marco del meme estilo cuadro */
+    .marco {
+      background: white;
+      border: 4px solid var(--marron);
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: 4px 4px 0 var(--marron-claro);
+    }
+
+    #meme {
+      width: 100%;
+      display: block;
+      border-radius: 8px;
+      min-height: 180px;
+      background: #f1e2cf;
+      animation: aparecer .35s ease;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: scale(.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .contador {
+      margin: 12px 0 4px;
+      font-weight: 800;
+      color: var(--marron-claro);
+    }
+
+    .botones {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    button {
+      font-family: "Nunito", sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 12px 18px;
+      border: 3px solid var(--marron);
+      border-radius: 30px;
+      background: var(--amarillo);
+      color: var(--marron);
+      cursor: pointer;
+      transition: transform .08s, box-shadow .08s;
+      box-shadow: 3px 3px 0 var(--marron);
+    }
+
+    button:hover { transform: translateY(-2px); box-shadow: 4px 5px 0 var(--marron); }
+    button:active { transform: translateY(1px); box-shadow: 1px 1px 0 var(--marron); }
+
+    .principal {
+      background: var(--marron);
+      color: var(--crema);
+    }
+
+    footer {
+      margin-top: 18px;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--marron-claro);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="caja">
+    <h1>Fan del fantasma de Tito Calderón</h1>
+
+    <div class="marco">
+      <img id="meme" src="" alt="meme del Momo">
+    </div>
+
+    <p class="contador" id="contador">1 / 1</p>
+
+    <div class="botones">
+      <button onclick="anterior()">⟵ Anterior</button>
+      <button class="principal" onclick="cambiarMeme()">Siguiente meme ⟶</button>
+    </div>
+
+    <footer>Hecho con amor 💛</footer>
+  </div>
+
+  <script>
+    var memes = [
+      "https://i.pinimg.com/736x/42/e0/af/42e0afdc1ce14e0b1ce34a5876a4b1a2.jpg",
+      "https://i.pinimg.com/736x/1a/7e/8a/1a7e8a39c8532194c2536d36904198ba.jpg",
+      "https://i.pinimg.com/1200x/ea/e3/09/eae309b8083958b0e41de39ef3a1b183.jpg",
+      "https://i.pinimg.com/736x/7f/4d/a8/7f4da8378129077faa267100bd803268.jpg",
+      "https://i.pinimg.com/736x/c0/0c/1c/c00c1cefea63d31ca2eda987c9bf14c6.jpg",
+      "https://i.makeagif.com/media/6-01-2022/w9Xjdi.gif"
+    ];
+
+    var indice = 0;
+
+    function mostrar() {
+      var img = document.getElementById("meme");
+      img.src = memes[indice];
+      img.style.animation = "none";
+      img.offsetHeight; 
+      img.style.animation = "";
+      document.getElementById("contador").textContent = (indice + 1) + " / " + memes.length;
+    }
+
+    function cambiarMeme() {
+      indice = (indice + 1) % memes.length;
+      mostrar();
+    }
+
+    function anterior() {
+      indice = (indice - 1 + memes.length) % memes.length;
+      mostrar();
+    }
+
+    mostrar();
+  </script>
+
+</body>
+</html>
